@@ -30,7 +30,7 @@ config({
 
 const corsOptions = {
   origin:
-    "https://blog-app-front-50rj0kx3q-parvezs-projects-8110b8cd.vercel.app/",
+    "https://blog-app-front-50rj0kx3q-parvezs-projects-8110b8cd.vercel.app",
   methods: "GET,PUT,POST,DELETE",
   credentials: true,
 };
