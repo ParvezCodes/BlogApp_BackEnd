@@ -50,7 +50,9 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 // Multer storage configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "images"));
+    const uploadPath = path.join(__dirname, "images");
+    console.log("Saving file to:", uploadPath); // Debugging log
+    cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
