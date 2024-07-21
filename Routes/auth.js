@@ -67,7 +67,7 @@ router.post("/login", validateLogin, async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: 60 * 60 * 1000,
-      secure: false,
+      secure: true,
       sameSite: "Lax",
     });
 
