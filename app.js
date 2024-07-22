@@ -16,11 +16,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Rate Limiter: Limits the number of requests from the same device
-const limiter = rateLimit({
-  windowMs: 2 * 60 * 1000, // 2 minutes window
-  max: 500, // Limit each IP to 500 requests per windowMs
-  message: "Too many requests, please try again after 5 minutes", // Message sent when rate limit is exceeded
-});
+// const limiter = rateLimit({
+//   windowMs: 2 * 60 * 1000, // 2 minutes window
+//   max: 500, // Limit each IP to 500 requests per windowMs
+//   message: "Too many requests, please try again after 5 minutes", // Message sent when rate limit is exceeded
+// });
 
 export const app = express();
 
@@ -29,8 +29,7 @@ config({
 });
 
 const corsOptions = {
-  origin:
-    "https://blog-app-front-end-nine.vercel.app",
+  origin: "https://blog-app-front-end-nine.vercel.app",
   methods: "GET,PUT,POST,DELETE",
   credentials: true,
 };
@@ -38,7 +37,7 @@ const corsOptions = {
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(corsOptions));
-app.use(limiter);
+// app.use(limiter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/posts", postRouter);
