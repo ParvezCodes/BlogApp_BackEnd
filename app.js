@@ -28,7 +28,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const app = express();
+export const app = express();
 
 const corsOptions = {
   origin: "https://blog-app-front-end-nine.vercel.app",
