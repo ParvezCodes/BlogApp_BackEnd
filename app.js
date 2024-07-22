@@ -44,7 +44,8 @@ app.use("/api/v1/posts", postRouter);
 app.use("/api/v1/comment", commentRouter);
 
 // Serve static files (images)
-app.use("/images", express.static(path.join(__dirname, "images")));
+// app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 // Multer storage configuration
 const storage = multer.diskStorage({
