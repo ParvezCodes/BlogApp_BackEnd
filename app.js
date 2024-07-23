@@ -17,7 +17,7 @@ config({
 });
 
 const corsOptions = {
-  origin: "https://blogapp-frontend-34wm.onrender.com",
+  origin: "https://blog-app-front-end-chi.vercel.app",
   methods: "GET,PUT,POST,DELETE",
   credentials: true,
 };
