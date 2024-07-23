@@ -8,7 +8,7 @@ import postRouter from "./Routes/Posts.js";
 import commentRouter from "./Routes/Comments.js";
 import cloudinary from "./Data/cloudinary.js";
 import upload from "./Middleware/multer.js";
-import fs from "fs"; // Importing fs to handle file deletion after upload
+import fs from "fs";
 
 export const app = express();
 
@@ -62,7 +62,7 @@ app.post("/api/upload", upload.single("file"), function (req, res) {
     res.status(200).json({
       success: true,
       message: "Uploaded!",
-      data: result.url, // Ensure URL is returned
+      data: result.secure_url, // Ensure URL is returned
     });
   });
 });
