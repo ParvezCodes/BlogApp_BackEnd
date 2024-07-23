@@ -17,7 +17,7 @@ config({
 });
 
 const corsOptions = {
-  origin: "https://blog-app-front-end-nine.vercel.app",
+  origin: "https://blogapp-frontend-34wm.onrender.com",
   methods: "GET,PUT,POST,DELETE",
   credentials: true,
 };
@@ -40,18 +40,18 @@ app.post("/api/upload", upload.single("file"), function (req, res) {
     });
   }
 
-  console.log('Received file:', req.file);
+  console.log("Received file:", req.file);
 
   cloudinary.uploader.upload(req.file.path, function (err, result) {
     // Delete the file after upload
     fs.unlink(req.file.path, (err) => {
       if (err) {
-        console.error('Error deleting the file:', err);
+        console.error("Error deleting the file:", err);
       }
     });
 
     if (err) {
-      console.log('Cloudinary error:', err);
+      console.log("Cloudinary error:", err);
       return res.status(500).json({
         success: false,
         message: "Error uploading to Cloudinary",
