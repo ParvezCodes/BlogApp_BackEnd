@@ -6,29 +6,14 @@ import authRouter from "./Routes/auth.js";
 import userRouter from "./Routes/Users.js";
 import postRouter from "./Routes/Posts.js";
 import commentRouter from "./Routes/Comments.js";
-import multer from "multer";
-import cloudinary from "cloudinary";
-import { Readable } from "stream";
-import { fileURLToPath } from "url";
-import path from "path";
+import cloudinary from "./Data/cloudinary.js";
+import upload from "./Middleware/multer.js";
 
-// Get the current module URL and directory name
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+export const app = express();
 
-// Load environment variables
 config({
   path: "./Data/.env",
 });
-
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-export const app = express();
 
 const corsOptions = {
   origin: "https://blog-app-front-end-nine.vercel.app",
@@ -46,29 +31,22 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/posts", postRouter);
 app.use("/api/v1/comment", commentRouter);
 
-// Multer setup for handling file uploads
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-
-// Upload route with Cloudinary integration
-app.post("/api/upload", upload.single("file"), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ msg: "No file received" });
-  }
-
-  const stream = Readable.from(req.file.buffer);
-  const uploadStream = cloudinary.v2.uploader.upload_stream((error, result) => {
-    if (error) {
-      console.error("Cloudinary upload error:", error);
-      return res.status(500).json({ message: "Upload failed", error });
+app.post("/api/upload", upload.single("file"), function (req, res) { // Changed key to "file"
+  cloudinary.uploader.upload(req.file.path, function (err, result) {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({
+        success: false,
+        message: "Error",
+      });
     }
+
     res.status(200).json({
-      message: "File uploaded successfully!",
-      url: result.secure_url,
+      success: true,
+      message: "Uploaded!",
+      data: result.url, // Ensure URL is returned
     });
   });
-
-  stream.pipe(uploadStream);
 });
 
 // Test route
