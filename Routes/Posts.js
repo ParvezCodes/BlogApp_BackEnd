@@ -13,6 +13,8 @@ router.post("/create", authenticate, async (req, res) => {
   const { title, desc, photo, username, categories } = req.body;
   const userId = req.user.userId;
 
+  console.log("Received post data:", req.body);
+
   try {
     const newPost = new Post({
       title,
@@ -24,6 +26,7 @@ router.post("/create", authenticate, async (req, res) => {
     });
 
     const savedPost = await newPost.save();
+    console.log("Saved post:", savedPost);
 
     res.status(200).json({ msg: "Post is created", savedPost });
   } catch (error) {
