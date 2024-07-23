@@ -8,6 +8,7 @@ import postRouter from "./Routes/Posts.js";
 import commentRouter from "./Routes/Comments.js";
 import cloudinary from "./Data/cloudinary.js";
 import upload from "./Middleware/multer.js";
+import fs from "fs"; // Importing fs to handle file deletion after upload
 
 export const app = express();
 
@@ -31,13 +32,30 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/posts", postRouter);
 app.use("/api/v1/comment", commentRouter);
 
-app.post("/api/upload", upload.single("file"), function (req, res) { // Changed key to "file"
+app.post("/api/upload", upload.single("file"), function (req, res) {
+  if (!req.file) {
+    return res.status(400).json({
+      success: false,
+      message: "No file uploaded",
+    });
+  }
+
+  console.log('Received file:', req.file);
+
   cloudinary.uploader.upload(req.file.path, function (err, result) {
+    // Delete the file after upload
+    fs.unlink(req.file.path, (err) => {
+      if (err) {
+        console.error('Error deleting the file:', err);
+      }
+    });
+
     if (err) {
-      console.log(err);
+      console.log('Cloudinary error:', err);
       return res.status(500).json({
         success: false,
-        message: "Error",
+        message: "Error uploading to Cloudinary",
+        error: err.message, // Return the error message
       });
     }
 
