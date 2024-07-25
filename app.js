@@ -13,7 +13,7 @@ export const app = express();
 
 config(); 
 const corsOptions = {
-  origin: "https://blog-app-front-end-chi.vercel.app",
+  origin: "https://blog-app-front-end-sigma.vercel.app",
   methods: "GET,PUT,POST,DELETE",
   credentials: true,
 };
