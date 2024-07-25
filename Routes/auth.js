@@ -30,7 +30,7 @@ router.post(
       const user = new User({ username, email, password: hashedPass });
       const SavedUser = user.save();
 
-      return res.status(200).json({ msg: "User Created Successfully", user });
+      return res.status(200).json({ msg: "User Created Successfully", SavedUser });
     } catch (error) {
       res.status(500).json({ msg: "Internal Server Error", error });
     }
@@ -68,7 +68,7 @@ router.post("/login", validateLogin, async (req, res) => {
       httpOnly: true,
       maxAge: 60 * 60 * 1000,
       secure: true,
-      sameSite: "None",
+      sameSite: "Lax",
     });
 
     return res.status(200).json({ msg: "Login Successfully", user });

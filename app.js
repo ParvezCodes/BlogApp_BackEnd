@@ -8,14 +8,10 @@ import postRouter from "./Routes/Posts.js";
 import commentRouter from "./Routes/Comments.js";
 import cloudinary from "./Data/cloudinary.js";
 import upload from "./Middleware/multer.js";
-import fs from "fs";
 
 export const app = express();
 
-config({
-  path: "./Data/.env",
-});
-
+config(); 
 const corsOptions = {
   origin: "https://blog-app-front-end-chi.vercel.app",
   methods: "GET,PUT,POST,DELETE",
@@ -40,31 +36,24 @@ app.post("/api/upload", upload.single("file"), function (req, res) {
     });
   }
 
-  console.log("Received file:", req.file);
-
-  cloudinary.uploader.upload(req.file.path, function (err, result) {
-    // Delete the file after upload
-    fs.unlink(req.file.path, (err) => {
+  cloudinary.uploader
+    .upload_stream({ resource_type: "auto" }, (err, result) => {
       if (err) {
-        console.error("Error deleting the file:", err);
+        console.log("Cloudinary error:", err);
+        return res.status(500).json({
+          success: false,
+          message: "Error uploading to Cloudinary",
+          error: err.message, // Return the error message
+        });
       }
-    });
 
-    if (err) {
-      console.log("Cloudinary error:", err);
-      return res.status(500).json({
-        success: false,
-        message: "Error uploading to Cloudinary",
-        error: err.message, // Return the error message
+      res.status(200).json({
+        success: true,
+        message: "Uploaded!",
+        data: result.secure_url, // Ensure URL is returned
       });
-    }
-
-    res.status(200).json({
-      success: true,
-      message: "Uploaded!",
-      data: result.secure_url, // Ensure URL is returned
-    });
-  });
+    })
+    .end(req.file.buffer); // Use req.file.buffer for in-memory storage
 });
 
 // Test route

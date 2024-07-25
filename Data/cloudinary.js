@@ -1,11 +1,10 @@
 import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
+dotenv.config(); // Adjust path as necessary
 
-dotenv.config(process.env.CLOUDINARY_CLOUD_NAME);
-console.log(process.env.CLOUDINARY_API_KEY);
-console.log(process.env.CLOUDINARY_API_SECRET);
-
-console.log();
+console.log("env :", process.env.CLOUDINARY_API_KEY);
+console.log("env :", process.env.CLOUDINARY_API_SECRET);
+console.log("env :", process.env.CLOUDINARY_CLOUD_NAME);
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

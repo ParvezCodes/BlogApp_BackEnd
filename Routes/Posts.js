@@ -118,24 +118,19 @@ router.get("/", async (req, res) => {
   }
 
   try {
-    const totalPosts = await Post.countDocuments();
+    const totalPosts = await Post.countDocuments(query); // Use the query here
     const posts = await Post.find(query)
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
       .exec();
 
-    if (posts.length === 0) {
-      return res
-        .status(404)
-        .json({ msg: "No posts found with the provided title" });
-    }
-
     res.status(200).json({ posts, total: totalPosts });
   } catch (error) {
     res.status(500).json({ msg: "Error retrieving posts", error });
   }
 });
+
 
 // GET USER POST
 router.get("/user/:userId", async (req, res) => {
