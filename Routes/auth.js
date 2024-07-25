@@ -41,9 +41,7 @@ router.post(
 router.post("/login", validateLogin, async (req, res) => {
   const { email, password } = req.body;
 
-  if (req.user) {
-    return res.status(400).json({ msg: "User is already logged in" });
-  }
+ 
 
   try {
     const user = await User.findOne({ email });
