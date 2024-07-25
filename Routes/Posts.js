@@ -8,12 +8,10 @@ import {
 
 const router = express.Router();
 
-// CREATE POST
+// CREATE NEW POST
 router.post("/create", authenticate, async (req, res) => {
   const { title, desc, photo, username, categories } = req.body;
   const userId = req.user.userId;
-
-  console.log("Received post data:", req.body);
 
   try {
     const newPost = new Post({
@@ -28,11 +26,12 @@ router.post("/create", authenticate, async (req, res) => {
     const savedPost = await newPost.save();
     console.log("Saved post:", savedPost);
 
-    res.status(200).json({ msg: "Post is created", savedPost });
+    res.status(200).json({ msg: "Post Created", savedPost });
   } catch (error) {
     res.status(500).json({ msg: "some error occur", error });
   }
 });
+
 
 // UPDATE POST
 router.put(

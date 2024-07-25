@@ -2,8 +2,6 @@ import jwt from "jsonwebtoken";
 import { Post } from "../Models/Post.js";
 
 export const authenticate = (req, res, next) => {
-  // Get token from header, query, or cookies
-  // const token = req.headers.authorization?.split(" ")[1];
   const token = req.cookies.token;
 
   if (!token) {
@@ -18,6 +16,7 @@ export const authenticate = (req, res, next) => {
     res.status(401).json({ msg: "Unauthorized: Invalid Token", error });
   }
 };
+
 
 export const authorizePostOwner = async (req, res, next) => {
   const postId = req.params.id;
